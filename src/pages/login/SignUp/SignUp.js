@@ -33,17 +33,25 @@ const SignUp = () => {
     }
   }
 
+  const gotoSignIn = () => {
+    navigation.navigate('SignInScreen');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Image style={styles.image1} source={{uri: 'https://www.pngitem.com/pimgs/m/390-3901233_retro-cartoon-camera-png-download-transparent-background-cartoon.png'}}/>
-      <View>
+      <Text style={styles.title}>Create An Account</Text>
+      <View style={styles.createUserArea}>
         <LoginInput iconName='alternate-email' placeholderText='Email' setText={setEmail} text={email} />
-        <LoginInput iconName='lock-outline' placeholderText='Password' setText={setPassword} text={password} />
-        <LoginInput iconName='lock-outline' placeholderText='Password again' setText={setPasswordAgain} text={passwordAgain} />
+        <LoginInput iconName='lock-outline' placeholderText='Password' setText={setPassword} text={password} hidePassword={true} />
+        <LoginInput iconName='lock-outline' placeholderText='Password again' setText={setPasswordAgain} text={passwordAgain} hidePassword={true} />
         <LoginInput iconName='people' placeholderText='Username' setText={setUsername} text={username} />
+        <TouchableOpacity style={styles.signUpBtn} onPress={createUser}>
+          <Text style={styles.signUpText}>Sign Up!</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.regBtn} onPress={createUser}>
-        <Text style={styles.regText}>Register</Text>
+      <TouchableOpacity style={styles.alreadyBtn} onPress={gotoSignIn}>
+        <Text style={styles.alreadyText}>I HAVE ALREADY AN ACCOUNT</Text>
       </TouchableOpacity>
     </SafeAreaView>
   )
