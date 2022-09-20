@@ -22,6 +22,8 @@ const SignIn = () => {
 
   const gotoSignUp = () => {
     navigation.navigate('SignUpScreen');
+    setEmail('');
+    setPassword('');
   };
 
   const login = () => {
@@ -56,14 +58,14 @@ const SignIn = () => {
 
       <View style={styles.loginArea}>
         <LoginInput iconName='alternate-email' placeholderText='Email' setText={setEmail} text={email} />
-        <LoginInput iconName='lock-outline' placeholderText='Password' setText={setPassword} text={password} />
+        <LoginInput iconName='lock-outline' placeholderText='Password' setText={setPassword} text={password} hidePassword={true} />
         <TouchableOpacity style={styles.loginBtn} onPress={login}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
       </View>
       
-      <TouchableOpacity style={styles.regBtn} onPress={gotoSignUp}>
-        <Text style={styles.regText}>I DON'T HAVE AN ACCOUNT!</Text>
+      <TouchableOpacity style={styles.noAccBtn} onPress={gotoSignUp}>
+        <Text style={styles.noAccText}>I DON'T HAVE AN ACCOUNT!</Text>
       </TouchableOpacity>
 
     </SafeAreaView>

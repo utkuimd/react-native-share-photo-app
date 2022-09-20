@@ -46,17 +46,9 @@ const AppNavigatior = () => {
 
 const LoginStackNav = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name='SignInScreen' component={SignIn} options={{headerShown: false}}/>
-      <Stack.Screen
-        name='SignUpScreen'
-        component={SignUp}
-        options={{
-          headerTitle: 'Sign Up',
-          headerTitleAlign: 'center',
-          headerStyle: { },
-        }}
-      />
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name='SignInScreen' component={SignIn} />
+      <Stack.Screen name='SignUpScreen'component={SignUp} />
     </Stack.Navigator>
   )
 }

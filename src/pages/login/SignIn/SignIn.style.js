@@ -54,7 +54,7 @@ export default StyleSheet.create({
         fontSize: 20,
         color: 'white',
     },
-    regBtn: {
+    noAccBtn: {
         width: '80%',
         height: 60,
         justifyContent: 'center',
@@ -63,7 +63,7 @@ export default StyleSheet.create({
         borderWidth: 1,
         borderColor: 'brown',
     },
-    regText: {
+    noAccText: {
         fontSize: 16,
         color: 'brown',
         textDecorationLine: 'underline',
