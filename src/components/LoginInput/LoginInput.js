@@ -3,7 +3,7 @@ import React from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import styles from './LoginInput.style';
 
-const LoginInput = ({iconName, placeholderText}) => {
+const LoginInput = ({iconName, placeholderText, setText, text}) => {
   return (
         <View style={styles.inputArea}>
             <View style={styles.inputTextArea}>
@@ -12,8 +12,8 @@ const LoginInput = ({iconName, placeholderText}) => {
                     style={styles.inputText}
                     placeholder={placeholderText}
                     placeholderTextColor={'#bdbebd'}
-                    onChangeText={null}
-                    value={null}
+                    onChangeText={setText}
+                    value={text}
                 />
             </View>
         <View style={styles.underline} />

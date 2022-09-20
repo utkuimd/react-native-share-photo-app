@@ -1,14 +1,44 @@
-import { SafeAreaView, View, Text, TouchableOpacity, Image } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
+import { SafeAreaView, View, Text, TouchableOpacity, Image, Alert } from 'react-native';
+
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../../utils/slices/userSlice';
+
 import { LoginInput } from '../../../components';
+
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../../utils/firebase';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './SignIn.style';
 
 const SignIn = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const gotoSignUp = () => {
     navigation.navigate('SignUpScreen');
+  };
+
+  const login = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then(response => {
+        const user = response.user;
+        const userNeededData = {
+          email: user.email,
+          username: user.displayName,
+          photoURL: user.photoURL
+        };
+        AsyncStorage.setItem('user', JSON.stringify(userNeededData));
+        dispatch(setUser(JSON.stringify(userNeededData)));
+        setEmail('');
+        setPassword('');
+      })
+      .catch(err => Alert.alert(err.message));
   }
 
   return (
@@ -25,9 +55,9 @@ const SignIn = () => {
       </View>
 
       <View style={styles.loginArea}>
-        <LoginInput iconName='alternate-email' placeholderText='Email' />
-        <LoginInput iconName='lock-outline' placeholderText='Password' />
-        <TouchableOpacity style={styles.loginBtn}>
+        <LoginInput iconName='alternate-email' placeholderText='Email' setText={setEmail} text={email} />
+        <LoginInput iconName='lock-outline' placeholderText='Password' setText={setPassword} text={password} />
+        <TouchableOpacity style={styles.loginBtn} onPress={login}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
       </View>
