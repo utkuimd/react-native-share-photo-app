@@ -12,28 +12,35 @@ const BottomTab = createBottomTabNavigator();
 const AppNavigation = () => {
   const bool = true;
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerShown : false}}>
       {
         bool ? (
-          <Stack.Screen name='LoginScreens' component={LoginNavigation}/>
+          <Stack.Screen name='LoginScreens' component={LoginStackNav}/>
         ) : (
-          <Stack.Screen name='MainScreens' component={MainNavigation}/>
+          <Stack.Screen name='MainScreens' component={MainTabNav}/>
         )
       }
     </Stack.Navigator>
   )
 }
 
-const LoginNavigation = () => {
+const LoginStackNav = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name='SignInScreen' component={SignIn}/>
-      <Stack.Screen name='SignUpScreen' component={SignUp}/>
+      <Stack.Screen name='SignInScreen' component={SignIn} options={{headerShown: false}}/>
+      <Stack.Screen
+        name='SignUpScreen'
+        component={SignUp}
+        options={{
+          headerTitle: 'Sign Up',
+          headerTitleAlign: 'center',
+        }}
+      />
     </Stack.Navigator>
   )
 }
 
-const MainNavigation = () => {
+const MainTabNav = () => {
   return (
     <BottomTab.Navigator>
       <BottomTab.Screen name='HomeScreen' component={Home}/>
