@@ -17,10 +17,12 @@ export default StyleSheet.create({
     title: {
         fontSize: 32,
         fontWeight: 'bold',
+        top: '4%',
     },
     createUserArea: {
         width: '80%',
-        height: Dimensions.get('screen').height / 2,
+        height: Dimensions.get('screen').height / 2.5,
+        justifyContent: 'center',
     },
     signUpBtn: {
         width: '100%',
@@ -34,6 +36,29 @@ export default StyleSheet.create({
     signUpText: {
         fontSize: 20,
         color: 'white',
+    },
+    chooseProPicArea: {
+        flexDirection: 'row',
+        width: '80%',
+        justifyContent: 'space-around',
+    },
+    pickProImageBtn: {
+        width: 120,
+        height: 120,
+        borderWidth: 4,
+        borderColor: 'brown',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    pickProImageText: {
+        color: 'brown',
+        fontSize: 20,
+
+    },
+    profileImagePreview: {
+        width: 160,
+        height: 120,
+        borderRadius: 10,
     },
     alreadyBtn: {
         width: '80%',
