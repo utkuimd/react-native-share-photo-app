@@ -1,140 +1,94 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, Button, FlatList, SafeAreaView } from 'react-native';
-import { useSelector } from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as ImagePicker from 'expo-image-picker';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '../../../../utils/firebase';
-import uuid from 'react-native-uuid';
-import { addDoc, collection, getDocs, doc, setDoc } from 'firebase/firestore';
+import React, { useEffect, useState, useCallback } from 'react';
+import { SafeAreaView, View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
+
+import { collection, getDocs, } from 'firebase/firestore';
 import { db } from '../../../../utils/firebase';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+
+import { setLastPhotoID } from '../../../../utils/slices/lastPhotoID';
+
+import uuid from 'react-native-uuid';
+import * as SplashScreen from 'expo-splash-screen';
+SplashScreen.preventAutoHideAsync();
 import styles from './Home.style';
 
 const Home = () => {
+  const [userLoadedPhotos, setUserLoadedPhotos] = useState([]);
+
   const userInRedux = useSelector(state => state.user);
-  const [image, setImage] = useState(null);
-  const [arr, setArr] = useState([]);
-  const [lastUserPhotoID, setLastUserPhotoID] = useState(0);
+  const username = JSON.parse(userInRedux.user).username;
+  const loadedPhotoRedux = useSelector(state => state.loadedPhoto);
+  const lastPhotoID = useSelector(state => state.lastPhotoID);
 
-  const showUser = async () => {
-    const userInLocal = await AsyncStorage.getItem('user');
-    console.log(userInLocal);
-    console.log(userInRedux);
-  };
-
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      
-      const photoURL = await uploadImageAsync(result.uri);
-      console.log('photoURL:',photoURL);
-      writeFirestore(photoURL);
-    }
-  };
-
-  async function uploadImageAsync(uri) {
-    // Why are we using XMLHttpRequest? See:
-    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
-    let i = 1;
-    const blob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.onload = function () {
-        resolve(xhr.response);
-      };
-      xhr.onerror = function (e) {
-        console.log(e);
-        reject(new TypeError("Network request failed"));
-      };
-      xhr.responseType = "blob";
-      xhr.open("GET", uri, true);
-      xhr.send(null);
-    });
-  
-    const fileRef = ref(storage, uuid.v4());
-    const result = await uploadBytes(fileRef, blob);
-    console.log(blob._data.name);
-  
-    // We're done with the blob, close and release it
-    blob.close();
-  
-    return await getDownloadURL(fileRef);
-  };
-
-  const writeFirestore = async (photoURL) => {
-    try {
-      /*const docRef = await addDoc(collection(db, "userPhotos"), {
-        photoURL,
-      });*/
-      let i = 1;
-      await setDoc(doc(db, "userPhotos", `user-photo-${lastUserPhotoID + 1}`), {
-        photoURL,
-      });
-      setImage(photoURL);
-      console.log("Document wrote with success!");
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-  }
-
-  const showUserPhotos = async () => {
-    const querySnapshot = await getDocs(collection(db, "userPhotos"));
-    const _arr = [];
-    querySnapshot.forEach((doc) => {
-      _arr.push(doc.id);
-    });
-    console.log(_arr);
-    const _lastUserPhotoID = parseInt(_arr[_arr.length - 1].split('-')[2]);
-    console.log(typeof(_lastUserPhotoID), _lastUserPhotoID);
-    setLastUserPhotoID(_lastUserPhotoID);
-    
-  };
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const getUserPhotos = async () => {
-    const querySnapshot = await getDocs(collection(db, "userPhotos"));
-    const _arr = [];
+    const querySnapshot = await getDocs(collection(db, `${username}-photos`));
+    const _userLoadedPhotos = [];
+
     querySnapshot.forEach((doc) => {
-      _arr.push({
+      _userLoadedPhotos.push({
         photoURL: doc.data().photoURL,
+        docID: doc.id,
       });
     });
-    setArr(_arr);
-    console.log(arr);
-  }
+
+    setUserLoadedPhotos(_userLoadedPhotos);
+
+    if (_userLoadedPhotos.length === 0) { // User didn't upload any photo before.
+      dispatch(setLastPhotoID(0)); 
+    } else {
+      const docIDs = _userLoadedPhotos.map(item => item.docID);
+      console.log(docIDs);
+      const _lastUserPhotoID = parseInt(docIDs[docIDs.length - 1].split('-')[2]);
+      dispatch(setLastPhotoID(_lastUserPhotoID));
+      console.log(lastPhotoID);
+    }
+  };
 
   useEffect(() => {
     getUserPhotos();
-    showUserPhotos();
-  }, []);
+  }, [loadedPhotoRedux]);
 
-  useEffect(() => {
-    getUserPhotos();
-  }, [image])
+  const gotoSendPhoto = () => {
+    navigation.navigate('SendPhotoScreen', {processID: uuid.v4()});
+  };
 
-  const renderUserPhotos = ({item}) => <Image style={{width: 200, height: 200}} source={{uri: item.photoURL}}/>
+  const [fontsLoaded] = useFonts({
+    'Kanit-Regular': require('../../../../../assets/fonts/Kanit-Regular.ttf'),
+  });
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+  if (!fontsLoaded) {
+    return null;
+  };
+
+  const renderUserLoadedPhotos = ({item}) => <Image style={styles.loadedPhotos} source={{uri: item.photoURL}}/>
+  
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Text>Home</Text>
-      <Text onPress={showUser}>Show User</Text>
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
-      <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-      <Text onPress={showUserPhotos}>SHOW USER PHOTOS İD'S</Text>
-      <Text onPress={getUserPhotos}>GET USER PHOTOURLS</Text>
-      <FlatList 
-        data={arr}
-        renderItem={renderUserPhotos}
-        numColumns={2}
+    <SafeAreaView style={styles.container}>
+
+      <TouchableOpacity style={styles.pickerProcessBtn} onPress={gotoSendPhoto}>
+        <View style={styles.pickerProcessDiv}>
+          <Text style={styles.pickerProcessText}>PICK AN IMAGE FROM THE LIBRARY</Text>
+        </View>
+      </TouchableOpacity>
+
+      <FlatList
+        ListHeaderComponent={<Text style={styles.listTitle} onLayout={onLayoutRootView}>{username.toUpperCase()}'s photos</Text>}
+        data={userLoadedPhotos}
+        renderItem={renderUserLoadedPhotos}
       />
+
     </SafeAreaView>
   )
 }
 
-export default Home
+export default Home;

@@ -6,13 +6,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { SignIn, SignUp } from './src/pages/login';
-import { Home, Map, Profile } from './src/pages/main';
+import { Home, SendPhoto, Map, Profile } from './src/pages/main';
 
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { store } from './src/utils/store';
 import { setUser } from './src/utils/slices/userSlice';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -55,11 +56,53 @@ const LoginStackNav = () => {
 
 const MainTabNav = () => {
   return (
-    <BottomTab.Navigator>
-      <BottomTab.Screen name='HomeScreen' component={Home}/>
+    <BottomTab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: 'brown',
+        tabBarInactiveTintColor: 'gray',
+        tabBarLabelStyle: { fontSize: 13 },
+      }}>
+      <BottomTab.Screen
+        name='HomeScreens'
+        component={HomeStackNav}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Home',
+          tabBarIcon: ({focused}) => (
+            <MaterialCommunityIcons
+              name={focused ? 'home-variant' : 'home-variant-outline'}
+              size={30}
+              color={focused ? 'brown' : 'gray'}
+            />
+          )
+        }}/>
       <BottomTab.Screen name='MapScreen' component={Map}/>
       <BottomTab.Screen name='ProfileScreen' component={Profile}/>
     </BottomTab.Navigator>
+  )
+}
+
+const HomeStackNav = () => {
+  return(
+    <Stack.Navigator>
+      <Stack.Screen
+        name='HomeScreen'
+        component={Home}
+        options={{
+          headerTitle: 'Home',
+          headerTitleAlign: 'center',
+          headerTitleStyle: { color: 'brown' },
+        }}/>
+      <Stack.Screen
+        name='SendPhotoScreen'
+        component={SendPhoto}
+        options={{
+          headerTitle: 'Send Photo',
+          headerTitleAlign: 'center',
+          headerTitleStyle: { color: 'brown' },
+          headerTintColor: 'brown',
+        }}/>
+    </Stack.Navigator>
   )
 }
 
