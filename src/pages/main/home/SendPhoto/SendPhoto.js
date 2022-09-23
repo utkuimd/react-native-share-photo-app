@@ -22,6 +22,7 @@ const SendPhoto = () => {
   const route = useRoute();
   const processID = route.params.processID;
 
+  const { theme } = useSelector(state => state.theme);
   const userInRedux = useSelector(state => state.user);
   const username = JSON.parse(userInRedux.user).username;
   const lastPhotoID = useSelector(state => state.lastPhotoID);
@@ -83,7 +84,7 @@ const SendPhoto = () => {
   }, [processID]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
 
       <Image style={styles.preview} source={{uri: imagePreview}}/> 
       

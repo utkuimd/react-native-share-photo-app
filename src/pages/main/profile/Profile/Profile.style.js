@@ -25,7 +25,6 @@ export default StyleSheet.create({
         maxWidth: '90%',
     },
     userDetailText: {
-        color: 'black',
         fontSize: 18,
         fontFamily: 'Kanit-Regular',
     },
@@ -42,7 +41,6 @@ export default StyleSheet.create({
         bottom: '4%',
     },
     changeThemeText: {
-        color: 'black',
         fontSize: 18,
         fontFamily: 'Kanit-Regular',
     },

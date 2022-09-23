@@ -4,6 +4,7 @@ import { SafeAreaView, View, Text, Image, Switch, TouchableOpacity } from 'react
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { setUser } from '../../../../utils/slices/userSlice';
+import { toggleTheme } from '../../../../utils/slices/themeSlice';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 SplashScreen.preventAutoHideAsync();
@@ -14,14 +15,21 @@ import styles from './Profile.style';
 const Profile = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
   const userInRedux = useSelector(state => state.user);
+  const { theme } = useSelector(state => state.theme);
 
   const profileImage = JSON.parse(userInRedux.user).photoURL;
   const username = JSON.parse(userInRedux.user).username;
   const email = JSON.parse(userInRedux.user).email;
 
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const [lightOrDark, setLightOrDark] = useState(false); 
+
+  const toggleSwitch = () => {
+    setLightOrDark(!lightOrDark);
+    dispatch(toggleTheme());
+    console.log(JSON.stringify(theme));
+  }
 
   const logout = async () => {
     await AsyncStorage.removeItem('user');
@@ -45,24 +53,24 @@ const Profile = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
 
       <View style={styles.userArea}>
         <Image style={styles.profileImage} source={{uri: profileImage}}/>
         <View style={styles.userDetail}>
-          <Text style={styles.userDetailText} onLayout={onLayoutRootView}>{username}</Text>
-          <Text style={styles.userDetailText} onLayout={onLayoutRootView}>{email}</Text>
+          <Text style={[styles.userDetailText, {color: theme.color}]} onLayout={onLayoutRootView}>{username}</Text>
+          <Text style={[styles.userDetailText, {color: theme.color}]} onLayout={onLayoutRootView}>{email}</Text>
         </View>
       </View>
       
       <View style={styles.changeThemeArea}>
-        <Text style={styles.changeThemeText} onLayout={onLayoutRootView}>Light / Dark</Text>
+        <Text style={[styles.changeThemeText, {color: theme.color}]} onLayout={onLayoutRootView}>Light / Dark</Text>
         <Switch
           trackColor={{ false: '#bdbebd', true: 'blue' }}
           thumbColor='white'
           ios_backgroundColor='#3e3e3e'
           onValueChange={toggleSwitch}
-          value={isEnabled}
+          value={lightOrDark}
         />
       </View>
 

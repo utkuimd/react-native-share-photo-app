@@ -27,6 +27,7 @@ const EditProfile = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const { theme } = useSelector(state => state.theme);
   const userInRedux = useSelector(state => state.user);
   const _profileImage = JSON.parse(userInRedux.user).photoURL;
   const _username = JSON.parse(userInRedux.user).username;
@@ -120,7 +121,7 @@ const EditProfile = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
 
       <View style={styles.editArea}>
         <LoginInput iconName='alternate-email' placeholderText='Email' setText={setEmail} text={email}/>

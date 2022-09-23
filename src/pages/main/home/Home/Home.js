@@ -18,6 +18,7 @@ import styles from './Home.style';
 const Home = () => {
   const [userLoadedPhotos, setUserLoadedPhotos] = useState([]);
 
+  const { theme } = useSelector(state => state.theme);
   const userInRedux = useSelector(state => state.user);
   const username = JSON.parse(userInRedux.user).username;
   const loadedPhotoRedux = useSelector(state => state.loadedPhoto);
@@ -73,7 +74,7 @@ const Home = () => {
   const renderUserLoadedPhotos = ({item}) => <Image style={styles.loadedPhotos} source={{uri: item.photoURL}}/>
   
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
 
       <TouchableOpacity style={styles.pickerProcessBtn} onPress={gotoSendPhoto}>
         <View style={styles.pickerProcessDiv}>

@@ -56,12 +56,14 @@ const LoginStackNav = () => {
 }
 
 const MainTabNav = () => {
+  const { theme } = useSelector(state => state.theme);
   return (
     <BottomTab.Navigator
       screenOptions={{
         tabBarActiveTintColor: 'brown',
         tabBarInactiveTintColor: 'gray',
         tabBarLabelStyle: { fontSize: 13 },
+        tabBarStyle: {backgroundColor: theme.headerColor}
       }}>
       <BottomTab.Screen
         name='HomeScreens'
@@ -97,6 +99,7 @@ const MainTabNav = () => {
 }
 
 const HomeStackNav = () => {
+  const { theme } = useSelector(state => state.theme);
   return(
     <Stack.Navigator>
       <Stack.Screen
@@ -106,6 +109,7 @@ const HomeStackNav = () => {
           headerTitle: 'Home',
           headerTitleAlign: 'center',
           headerTitleStyle: { color: 'brown' },
+          headerStyle: { backgroundColor: theme.headerColor }
         }}/>
       <Stack.Screen
         name='SendPhotoScreen'
@@ -115,6 +119,7 @@ const HomeStackNav = () => {
           headerTitleAlign: 'center',
           headerTitleStyle: { color: 'brown' },
           headerTintColor: 'brown',
+          headerStyle: { backgroundColor: theme.headerColor }
         }}/>
     </Stack.Navigator>
   )
@@ -123,6 +128,7 @@ const HomeStackNav = () => {
 const ProfileStackNav = () => {
   const userInRedux = useSelector(state => state.user);
   const username = JSON.parse(userInRedux.user).username;
+  const { theme } = useSelector(state => state.theme);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -131,7 +137,8 @@ const ProfileStackNav = () => {
         options={{
           headerTitle: username.toUpperCase(),
           headerTitleAlign: 'center',
-          headerTitleStyle: { color: 'brown' }
+          headerTitleStyle: { color: 'brown' },
+          headerStyle: { backgroundColor: theme.headerColor }
         }}/>
       <Stack.Screen
         name='EditProfileScreen'
@@ -141,6 +148,7 @@ const ProfileStackNav = () => {
           headerTitleAlign: 'center',
           headerTintColor: 'brown',
           headerTitleStyle: { color: 'brown' },
+          headerStyle: { backgroundColor: theme.headerColor }
         }}/>
     </Stack.Navigator>
   )
