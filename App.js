@@ -6,14 +6,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { SignIn, SignUp } from './src/pages/login';
-import { Home, SendPhoto, Map, Profile } from './src/pages/main';
+import { Home, SendPhoto, Map, Profile, EditProfile } from './src/pages/main';
 
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { store } from './src/utils/store';
 import { setUser } from './src/utils/slices/userSlice';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -77,7 +78,20 @@ const MainTabNav = () => {
           )
         }}/>
       <BottomTab.Screen name='MapScreen' component={Map}/>
-      <BottomTab.Screen name='ProfileScreen' component={Profile}/>
+      <BottomTab.Screen
+        name='ProfileScreens'
+        component={ProfileStackNav}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({focused}) => (
+            <FontAwesome5
+              name={focused ? 'user-alt' : 'user'}
+              size={25}
+              color={focused ? 'brown' : 'gray'}
+            />
+          )
+        }}/>
     </BottomTab.Navigator>
   )
 }
@@ -101,6 +115,32 @@ const HomeStackNav = () => {
           headerTitleAlign: 'center',
           headerTitleStyle: { color: 'brown' },
           headerTintColor: 'brown',
+        }}/>
+    </Stack.Navigator>
+  )
+}
+
+const ProfileStackNav = () => {
+  const userInRedux = useSelector(state => state.user);
+  const username = JSON.parse(userInRedux.user).username;
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name='ProfileScreen'
+        component={Profile}
+        options={{
+          headerTitle: username.toUpperCase(),
+          headerTitleAlign: 'center',
+          headerTitleStyle: { color: 'brown' }
+        }}/>
+      <Stack.Screen
+        name='EditProfileScreen'
+        component={EditProfile}
+        options={{
+          headerTitle: 'Edit Profile',
+          headerTitleAlign: 'center',
+          headerTintColor: 'brown',
+          headerTitleStyle: { color: 'brown' },
         }}/>
     </Stack.Navigator>
   )
