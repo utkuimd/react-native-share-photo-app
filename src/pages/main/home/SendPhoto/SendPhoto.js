@@ -66,6 +66,10 @@ const SendPhoto = () => {
     try {
       await setDoc(doc(db, `${username}-photos`, `${username}-photo-${lastPhotoID.lastPhotoID + 1}`), {
         photoURL,
+        location: {
+          latitude: ((Math.random() * (41.3 - 41) + 41).toFixed(6) * 1),
+          longitude: ((Math.random() * (29 - 28.5) + 28.5).toFixed(6) * 1)
+        }
       });
       dispatch(setLoadedPhoto(photoURL));
       navigation.navigate('HomeScreen');

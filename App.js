@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { SignIn, SignUp } from './src/pages/login';
-import { Home, SendPhoto, Map, Profile, EditProfile } from './src/pages/main';
+import { Home, SendPhoto, Map, BigPhoto, Profile, EditProfile } from './src/pages/main';
 
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { store } from './src/utils/store';
@@ -15,6 +15,7 @@ import { setUser } from './src/utils/slices/userSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -79,7 +80,20 @@ const MainTabNav = () => {
             />
           )
         }}/>
-      <BottomTab.Screen name='MapScreen' component={Map}/>
+      <BottomTab.Screen
+        name='MapScreens'
+        component={MapStackNav}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Map',
+          tabBarIcon: ({focused}) => (
+            <FontAwesome
+              name={focused ? 'map' : 'map-o'}
+              size={24}
+              color={focused ? 'brown' : 'gray'}
+            />
+          )
+        }}/>
       <BottomTab.Screen
         name='ProfileScreens'
         component={ProfileStackNav}
@@ -145,6 +159,33 @@ const ProfileStackNav = () => {
         component={EditProfile}
         options={{
           headerTitle: 'Edit Profile',
+          headerTitleAlign: 'center',
+          headerTintColor: 'brown',
+          headerTitleStyle: { color: 'brown' },
+          headerStyle: { backgroundColor: theme.headerColor }
+        }}/>
+    </Stack.Navigator>
+  )
+}
+
+const MapStackNav = () => {
+  const { theme } = useSelector(state => state.theme);
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name='MapScreen'
+        component={Map}
+        options={{
+          headerTitle: 'Map',
+          headerTitleAlign: 'center',
+          headerTitleStyle: { color: 'brown' },
+          headerStyle: { backgroundColor: theme.headerColor }
+        }}/>
+      <Stack.Screen
+        name='BigPhotoScreen'
+        component={BigPhoto}
+        options={{
+          headerTitle: 'Look Photo Easily',
           headerTitleAlign: 'center',
           headerTintColor: 'brown',
           headerTitleStyle: { color: 'brown' },
