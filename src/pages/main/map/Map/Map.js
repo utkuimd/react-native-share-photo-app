@@ -41,7 +41,15 @@ const Map = () => {
 
   return (
     <SafeAreaView>
-      <MapView style={styles.map}>
+      <MapView style={styles.map}
+        initialRegion={{
+          latitude: 41.090000,
+          longitude: 28.960000,
+          latitudeDelta: 0.02,
+          longitudeDelta: 0.02}}
+        showsScale
+        minZoomLevel={10}
+        maxZoomLevel={20}>
         {userLoadedPhotos.map(photo => (
           <MapView.Marker
             key={photo.docID}
