@@ -6,8 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 import { setUser } from '../../../../utils/slices/userSlice';
 import { toggleTheme } from '../../../../utils/slices/themeSlice';
 import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
-SplashScreen.preventAutoHideAsync();
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './Profile.style';
@@ -36,18 +34,6 @@ const Profile = () => {
     dispatch(setUser(null));
   };
 
-  const [fontsLoaded] = useFonts({
-    'Kanit-Regular': require('../../../../../assets/fonts/Kanit-Regular.ttf'),
-  });
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-  if (!fontsLoaded) {
-    return null;
-  };
-
   const gotoEditProfile = () => {
     navigation.navigate('EditProfileScreen');
   };
@@ -58,13 +44,13 @@ const Profile = () => {
       <View style={styles.userArea}>
         <Image style={styles.profileImage} source={{uri: profileImage}}/>
         <View style={styles.userDetail}>
-          <Text style={[styles.userDetailText, {color: theme.color}]} onLayout={onLayoutRootView}>{username}</Text>
-          <Text style={[styles.userDetailText, {color: theme.color}]} onLayout={onLayoutRootView}>{email}</Text>
+          <Text style={[styles.userDetailText, {color: theme.color}]}>{username}</Text>
+          <Text style={[styles.userDetailText, {color: theme.color}]}>{email}</Text>
         </View>
       </View>
       
       <View style={styles.changeThemeArea}>
-        <Text style={[styles.changeThemeText, {color: theme.color}]} onLayout={onLayoutRootView}>Light / Dark</Text>
+        <Text style={[styles.changeThemeText, {color: theme.color}]}>Light / Dark</Text>
         <Switch
           trackColor={{ false: '#bdbebd', true: 'blue' }}
           thumbColor='white'

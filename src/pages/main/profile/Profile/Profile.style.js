@@ -26,7 +26,6 @@ export default StyleSheet.create({
     },
     userDetailText: {
         fontSize: 18,
-        fontFamily: 'Kanit-Regular',
     },
     changeThemeArea: {
         width: '80%',
@@ -42,7 +41,6 @@ export default StyleSheet.create({
     },
     changeThemeText: {
         fontSize: 18,
-        fontFamily: 'Kanit-Regular',
     },
     editProfileBtn: {
         width: '80%',

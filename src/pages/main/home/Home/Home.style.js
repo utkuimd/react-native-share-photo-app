@@ -33,7 +33,6 @@ export default StyleSheet.create({
     },
     listTitle: {
         fontSize: 36,
-        fontFamily: 'Kanit-Regular',
         color: 'brown',
         marginLeft: 10,
     },

@@ -11,8 +11,6 @@ import { useFonts } from 'expo-font';
 import { setLastPhotoID } from '../../../../utils/slices/lastPhotoID';
 
 import uuid from 'react-native-uuid';
-import * as SplashScreen from 'expo-splash-screen';
-SplashScreen.preventAutoHideAsync();
 import styles from './Home.style';
 
 const Home = () => {
@@ -59,17 +57,11 @@ const Home = () => {
     navigation.navigate('SendPhotoScreen', {processID: uuid.v4()});
   };
 
-  const [fontsLoaded] = useFonts({
-    'Kanit-Regular': require('../../../../../assets/fonts/Kanit-Regular.ttf'),
-  });
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-  if (!fontsLoaded) {
-    return null;
-  };
+  /*function getRndLoc() {
+    const rndLatitude = (Math.random() * (41.3 - 41) + 41).toFixed(6) * 1;
+    const rndLongitude = (Math.random() * (29 - 28.5) + 28.5).toFixed(6) * 1;
+    console.log(rndLatitude, rndLongitude);
+  }*/
 
   const renderUserLoadedPhotos = ({item}) => <Image style={styles.loadedPhotos} source={{uri: item.photoURL}}/>
   
@@ -83,7 +75,7 @@ const Home = () => {
       </TouchableOpacity>
 
       <FlatList
-        ListHeaderComponent={<Text style={styles.listTitle} onLayout={onLayoutRootView}>{username.toUpperCase()}'s photos</Text>}
+        ListHeaderComponent={<Text style={styles.listTitle}>{username.toUpperCase()}'s photos</Text>}
         data={userLoadedPhotos}
         renderItem={renderUserLoadedPhotos}
       />
