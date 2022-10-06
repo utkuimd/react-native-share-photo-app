@@ -1,14 +1,13 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-c66648af7eb3fe8bc4f294546bfd86ef473780cde1dea487d3c4ff354943c9ae.svg)](https://classroom.github.com/online_ide?assignment_repo_id=8548164&assignment_repo_type=AssignmentRepo)
 
 ***PROJECT DESCRIPTION*** :<br>
 + It is Share photo app which build with React Native framework.<br>
 + You can upload photos what you want and also see location where you shared these photos.
 + You can update your profile, transition between dark or light theme.
 
-***PRESENTATION VİDEO OF MY PROJECT*** :<br>
-https://www.youtube.com/watch?v=ei1wzNxZ0UM
+***PRESENTATION VIDEO OF MY PROJECT*** :<br>
+[![Share-Photo-App](https://img.youtube.com/vi/ei1wzNxZ0UM/hqdefault.jpg)](https://www.youtube.com/watch?v=ei1wzNxZ0UM)
 
-***REQUİRED*** :<br>
+***REQUIRED*** :<br>
 :heavy_check_mark: This project was created by using Expo CLI.<br>
 :heavy_check_mark: Pages are scrollable.<br>
 :heavy_check_mark: In this project, a lots of commit pushed to the repository.<br>
@@ -16,7 +15,7 @@ https://www.youtube.com/watch?v=ei1wzNxZ0UM
 :heavy_check_mark: Components are reusable.<br>
 :heavy_multiplication_x: I didn't get any errors from ESLint.<br>
 
-***USED TECHNOLOGİES AND HOW THEY CAN İNSTALL*** :<br>
+***USED TECHNOLOGIES AND HOW THEY CAN INSTALL*** :<br>
 + I used "react-navigation" packet in this project. You can install this packet, as follows steps in this guide.<br>
 + https://reactnavigation.org/docs/getting-started#installation<br>
 + I used "Async Storage" packet in this project. You can install this packet, as follows steps in this guide.<br>
